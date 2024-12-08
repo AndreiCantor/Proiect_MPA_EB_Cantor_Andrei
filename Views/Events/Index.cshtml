@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Proiect_MPA_EB_Cantor_Andrei.Models.Event>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Events</h1>
+
+
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+<form asp-action="Index" method="get">
+    <div class="form-group">
+        <input type="text" name="searchQuery" class="form-control" placeholder="Search by Event Name" />
+    </div>
+    <div class="form-group">
+        <label for="sortOrder">Sort By</label>
+        <select name="sortOrder" class="form-control">
+            <option value="">Name (A-Z)</option>
+            <option value="name_desc" @(ViewData["SortOrder"] as string == "name_desc" ? "selected" : "")>Name (Z-A)</option>
+            <option value="Date" @(ViewData["SortOrder"] as string == "Date" ? "selected" : "")>Date (Ascending)</option>
+            <option value="date_desc" @(ViewData["SortOrder"] as string == "date_desc" ? "selected" : "")>Date (Descending)</option>
+            <option value="Capacity" @(ViewData["SortOrder"] as string == "Capacity" ? "selected" : "")>Capacity (Ascending)</option>
+            <option value="capacity_desc" @(ViewData["SortOrder"] as string == "capacity_desc" ? "selected" : "")>Capacity (Descending)</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary mt-16">Search</button>
+    <a asp-action="Index">Back to Full List</a>
+
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Capacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailableSeats)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Date)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Capacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailableSeats)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category.Name)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
