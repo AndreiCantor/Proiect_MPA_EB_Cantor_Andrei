@@ -33,14 +33,21 @@ namespace Proiect_MPA_EB_Cantor_Andrei.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Category
+            var category = await _context.Category.Include(c => c.Events)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (category == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            var viewModel = new CategoryDetailsViewModel
+            {
+                Category = category,
+                Events = category.Events.ToList() 
+            };
+
+            return View(viewModel);
         }
 
         // GET: Categories/Create

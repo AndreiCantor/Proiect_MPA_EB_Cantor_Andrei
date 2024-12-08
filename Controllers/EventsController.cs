@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -20,43 +21,67 @@ namespace Proiect_MPA_EB_Cantor_Andrei.Controllers
         }
 
         // GET: Events
-        public async Task<IActionResult> Index(string searchQuery, string sortOrder)
+        public async Task<IActionResult> Index(string searchQuery, string sortOrder, int pageNumber=1, int pageSize=5)
         {
-            ViewData["NameSortParm"] = string.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
-            ViewData["DateSortParm"] = sortOrder == "Date" ? "date_desc" : "Date";
-            ViewData["CapacitySortParm"] = sortOrder == "Capacity" ? "capacity_desc" : "Capacity";
+            var sortOrderList = new List<SelectListItem>
 
-            var events = from e in _context.Event.Include(e => e.Category)
-                         select e;
+    {
+        new SelectListItem { Value = "", Text = "Name (A-Z)" },
+        new SelectListItem { Value = "name_desc", Text = "Name (Z-A)" },
+        new SelectListItem { Value = "Date", Text = "Date (Ascending)" },
+        new SelectListItem { Value = "date_desc", Text = "Date (Descending)" },
+        new SelectListItem { Value = "Capacity", Text = "Capacity (Ascending)" },
+        new SelectListItem { Value = "capacity_desc", Text = "Capacity (Descending)" }
+    };
+
+            var eventsQuery = from e in _context.Event.Include(e => e.Category)
+                              select e;
 
             if (!string.IsNullOrEmpty(searchQuery))
             {
-                events = events.Where(e => e.Name.Contains(searchQuery));
+                eventsQuery = eventsQuery.Where(e => e.Name.Contains(searchQuery));
             }
 
             switch (sortOrder)
             {
                 case "name_desc":
-                    events = events.OrderByDescending(e => e.Name);
+                    eventsQuery = eventsQuery.OrderByDescending(e => e.Name);
                     break;
                 case "Date":
-                    events = events.OrderBy(e => e.Date);
+                    eventsQuery = eventsQuery.OrderBy(e => e.Date);
                     break;
                 case "date_desc":
-                    events = events.OrderByDescending(e => e.Date);
+                    eventsQuery = eventsQuery.OrderByDescending(e => e.Date);
                     break;
                 case "Capacity":
-                    events = events.OrderBy(e => e.Capacity);
+                    eventsQuery = eventsQuery.OrderBy(e => e.Capacity);
                     break;
                 case "capacity_desc":
-                    events = events.OrderByDescending(e => e.Capacity);
+                    eventsQuery = eventsQuery.OrderByDescending(e => e.Capacity);
                     break;
                 default:
-                    events = events.OrderBy(e => e.Name);
+                    eventsQuery = eventsQuery.OrderBy(e => e.Name);
                     break;
             }
 
-            return View(await events.ToListAsync());
+            var totalCount = await eventsQuery.CountAsync();
+            var events = await eventsQuery
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            var viewModel = new EventIndexViewModel
+            {
+                SearchQuery = searchQuery,
+                SortOrder = sortOrder,
+                SortOrderList = sortOrderList,
+                Events = events,
+                CurrentPage = pageNumber,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize),
+                PageSize = pageSize
+            };
+
+            return View(viewModel);
         }
 
         // GET: Events/Details/5
