@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -104,6 +105,8 @@ namespace Proiect_MPA_EB_Cantor_Andrei.Controllers
         }
 
         // GET: Events/Create
+
+        [Authorize(Policy = "AdminOnly")]
         public IActionResult Create()
         {
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name");
