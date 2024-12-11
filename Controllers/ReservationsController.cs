@@ -17,6 +17,7 @@ namespace Proiect_MPA_EB_Cantor_Andrei.Controllers
     {
         private readonly IdentityContext _context;
 
+
         public ReservationsController(IdentityContext context)
         {
             _context = context;
@@ -67,6 +68,8 @@ namespace Proiect_MPA_EB_Cantor_Andrei.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,EventId,ReservationDate,NumberOfSeats")] Reservation reservation)
         {
+
+
             if (ModelState.IsValid)
             {
                 reservation.UserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
