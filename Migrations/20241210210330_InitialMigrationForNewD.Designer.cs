@@ -3,17 +3,20 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proiect_MPA_EB_Cantor_Andrei.Data;
 
 #nullable disable
 
-namespace Proiect_MPA_EB_Cantor_Andrei.Migrations.Identity
+namespace Proiect_MPA_EB_Cantor_Andrei.Migrations
 {
-    [DbContext(typeof(IdentityContext))]
-    partial class IdentityContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(Proiect_MPA_EB_Cantor_AndreiContext))]
+    [Migration("20241210210330_InitialMigrationForNewD")]
+    partial class InitialMigrationForNewD
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

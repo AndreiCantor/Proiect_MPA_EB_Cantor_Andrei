@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Proiect_MPA_EB_Cantor_Andrei.Models;
 
 namespace Proiect_MPA_EB_Cantor_Andrei.Data;
 
@@ -18,4 +19,6 @@ public class IdentityContext : IdentityDbContext<IdentityUser>
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
     }
+
+public DbSet<Proiect_MPA_EB_Cantor_Andrei.Models.Reservation> Reservation { get; set; } = default!;
 }

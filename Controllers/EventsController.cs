@@ -129,7 +129,7 @@ namespace Proiect_MPA_EB_Cantor_Andrei.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", @event.CategoryId);
             return View(@event);
         }
-
+        [Authorize(Policy = "AdminOnly")]
         // GET: Events/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -146,7 +146,7 @@ namespace Proiect_MPA_EB_Cantor_Andrei.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", @event.CategoryId);
             return View(@event);
         }
-
+        [Authorize(Policy = "AdminOnly")]
         // POST: Events/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -182,7 +182,7 @@ namespace Proiect_MPA_EB_Cantor_Andrei.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Set<Category>(), "Id", "Name", @event.CategoryId);
             return View(@event);
         }
-
+        [Authorize(Policy = "AdminOnly")]
         // GET: Events/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -201,7 +201,7 @@ namespace Proiect_MPA_EB_Cantor_Andrei.Controllers
 
             return View(@event);
         }
-
+        [Authorize(Policy = "AdminOnly")]
         // POST: Events/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
